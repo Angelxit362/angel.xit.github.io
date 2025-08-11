@@ -1,21 +1,35 @@
 let currentPage = 0;
 const pages = document.querySelectorAll('.page');
 
-// Función para cambiar de página
+// Mostrar solo la primera página
+pages.forEach((p, i) => {
+    if (i !== 0) p.style.display = 'none';
+});
+
 function changePage(direction) {
-    // Oculta la página actual
-    pages[currentPage].classList.remove('show');
+    if (direction === 1 && currentPage < pages.length - 1) {
+        const img = pages[currentPage].querySelector('.photo');
+        img.classList.add('flip');
 
-    // Actualiza la página actual
-    currentPage += direction;
+        setTimeout(() => {
+            pages[currentPage].style.display = 'none';
+            currentPage++;
+            pages[currentPage].style.display = 'block';
+            img.classList.remove('flip');
+        }, 600);
 
-    // Si llegamos al final, volvemos al principio
-    if (currentPage < 0) currentPage = pages.length - 1;
-    if (currentPage >= pages.length) currentPage = 0;
+    } else if (direction === -1 && currentPage > 0) {
+        const img = pages[currentPage].querySelector('.photo');
+        img.classList.add('flip');
 
-    // Muestra la nueva página
-    pages[currentPage].classList.add('show');
+        setTimeout(() => {
+            pages[currentPage].style.display = 'none';
+            currentPage--;
+            pages[currentPage].style.display = 'block';
+            img.classList.remove('flip');
+        }, 600);
+    }
 }
 
-// Inicializamos la primera página (portada)
-pages[currentPage].classList.add('show');
+document.getElementById('next').onclick = () => changePage(1);
+document.getElementById('prev').onclick = () => changePage(-1);
